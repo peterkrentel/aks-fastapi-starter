@@ -34,3 +34,8 @@ FROM tiangolo/uvicorn-gunicorn-fastapi:python3.9
 COPY ./main.py /app/main.py
 
 `
+
+Then build & tag the image:
+```
+docker build -t yourdockerhubusername/fastapi-app:v1 .
+```
