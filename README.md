@@ -39,3 +39,18 @@ Then build & tag the image:
 ```
 docker build -t yourdockerhubusername/fastapi-app:v1 .
 ```
+
+# Create a resource group
+az group create --name fastapi-rg --location eastus
+
+# Create the AKS cluster
+az aks create \
+  --resource-group fastapi-rg \
+  --name fastapi-cluster \
+  --node-count 1 \
+  --enable-addons monitoring \
+  --generate-ssh-keys
+
+# Get AKS credentials to use kubectl
+az aks get-credentials --resource-group fastapi-rg --name fastapi-cluster
+
