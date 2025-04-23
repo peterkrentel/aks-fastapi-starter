@@ -1,0 +1,1 @@
+# aks-fastapi-starter
