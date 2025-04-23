@@ -25,3 +25,12 @@ def read_root():
     return {"message": "Hello from AKS!"}
 
 '''
+
+# Step 2: Dockerize the App
+Create DOCKERFILE
+`
+FROM tiangolo/uvicorn-gunicorn-fastapi:python3.9
+
+COPY ./main.py /app/main.py
+
+`
