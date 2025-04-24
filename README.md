@@ -96,3 +96,24 @@ spec:
       targetPort: 80
 
 '''
+
+Apply them:
+'''
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+'''
+
+# Step 5: Access the App
+Get the external IP:
+'''
+kubectl get service fastapi-service
+'''
+
+Once the EXTERNAL-IP is assigned, you can access your app via http://<EXTERNAL-IP>/.
+
+# To update the pod, push change to github via commit, will trigger github action to build and push container to dockerhub.
+
+Refresh deployment:
+'''
+kubectl rollout restart deployment fastapi-deployment
+'''
