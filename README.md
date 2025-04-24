@@ -79,3 +79,20 @@ spec:
         - containerPort: 80
 
 '''
+
+Create a service.yaml:
+'''
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastapi-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: fastapi
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+
+'''
