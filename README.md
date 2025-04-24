@@ -54,3 +54,28 @@ az aks create \
 # Get AKS credentials to use kubectl
 az aks get-credentials --resource-group fastapi-rg --name fastapi-cluster
 
+# Step 4: Create Kubernetes Deployment & Service
+Create a deployment.yaml:
+
+'''
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fastapi
+  template:
+    metadata:
+      labels:
+        app: fastapi
+    spec:
+      containers:
+      - name: fastapi
+        image: yourdockerhubusername/fastapi-app:v1
+        ports:
+        - containerPort: 80
+
+'''
