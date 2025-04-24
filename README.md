@@ -15,7 +15,7 @@ Docker – to containerize your FastAPI app.
 
 #Step 1: Build Your FastAPI App
 Here’s a minimal FastAPI app (main.py):
-'''
+```Python
 from fastapi import FastAPI
 
 app = FastAPI()
@@ -23,17 +23,15 @@ app = FastAPI()
 @app.get("/")
 def read_root():
     return {"message": "Hello from AKS!"}
-
-'''
+```
 
 # Step 2: Dockerize the App
 Create DOCKERFILE
-`
+```Docker
 FROM tiangolo/uvicorn-gunicorn-fastapi:python3.9
 
 COPY ./main.py /app/main.py
-
-`
+```
 
 Then build & tag the image:
 ```
@@ -41,23 +39,26 @@ docker build -t yourdockerhubusername/fastapi-app:v1 .
 ```
 
 # Create a resource group
+```
 az group create --name fastapi-rg --location eastus
-
+```
 # Create the AKS cluster
+```
 az aks create \
   --resource-group fastapi-rg \
   --name fastapi-cluster \
   --node-count 1 \
   --enable-addons monitoring \
   --generate-ssh-keys
-
+```
 # Get AKS credentials to use kubectl
+```
 az aks get-credentials --resource-group fastapi-rg --name fastapi-cluster
+```
 
 # Step 4: Create Kubernetes Deployment & Service
 Create a deployment.yaml:
-
-'''
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -77,11 +78,10 @@ spec:
         image: yourdockerhubusername/fastapi-app:v1
         ports:
         - containerPort: 80
-
-'''
+```
 
 Create a service.yaml:
-'''
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -94,9 +94,8 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
-
-'''
-
+<<<<<<< HEAD
+```
 Apply them:
 '''
 kubectl apply -f deployment.yaml
@@ -117,3 +116,4 @@ Refresh deployment:
 '''
 kubectl rollout restart deployment fastapi-deployment
 '''
+>>>>>>> c7151aa83675b303280539f0ad1932b31301f0c1
