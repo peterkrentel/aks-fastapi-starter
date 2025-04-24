@@ -107,7 +107,7 @@ Get the external IP:
 kubectl get service fastapi-service
 ```
 
-Once the EXTERNAL-IP is assigned, you can access your app via http://<EXTERNAL-IP>/.
+Once the EXTERNAL-IP is assigned, you can access your app via http://`<EXTERNAL-IP>`/.
 
 # To update the pod:
 Push change to github via commit, will trigger github action to build and push container to dockerhub.
