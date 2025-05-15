@@ -40,3 +40,20 @@ variable "node_vm_size" {
   type        = string
   default     = "Standard_DS2_v2"
 }
+
+variable "owner" {
+  description = "Owner of the resources"
+  type        = string
+}
+
+variable "min_node_count" {
+  description = "Minimum number of nodes in the node pool"
+  type        = number
+  default     = 1
+}
+
+variable "max_node_count" {
+  description = "Maximum number of nodes in the node pool"
+  type        = number
+  default     = 5
+}

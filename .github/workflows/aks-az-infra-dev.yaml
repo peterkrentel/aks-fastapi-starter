@@ -2,6 +2,8 @@ name: Manage AKS with Terraform
 
 on:
   push:
+    paths:
+      - 'infra/**'      # Only triggers if files in infra/ are changed
     branches:
       - main
   workflow_dispatch:
@@ -10,18 +12,29 @@ permissions:
   contents: read
   id-token: write
 
-concurrency:
-  group: aks-infra-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   terraform:
     name: Terraform AKS Infrastructure
     runs-on: ubuntu-latest
 
+    env:
+      TF_VAR_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      TF_VAR_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+      TF_VAR_resource_group_name: "your-resource-group-name"
+      TF_VAR_location: "eastus"
+      TF_VAR_aks_cluster_name: "your-aks-cluster-name"
+      TF_VAR_dns_prefix: "your-dns-prefix"
+      TF_VAR_node_count: 3
+      TF_VAR_node_vm_size: "Standard_DS2_v2"
+      TF_VAR_min_node_count: 1
+      TF_VAR_max_node_count: 5
+      TF_VAR_owner: "your-name"
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+        with:
+          path: infra
 
       - name: Set up Azure CLI
         uses: azure/login@v1
@@ -34,7 +47,7 @@ jobs:
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: ${{ secrets.TERRAFORM_VERSION || 'latest' }}
+          terraform_version: 1.5.6
 
       - name: Initialize Terraform
         working-directory: infra
