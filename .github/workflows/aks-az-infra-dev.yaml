@@ -28,7 +28,6 @@ jobs:
           allow-no-subscriptions: true
           enable-AzPIM: true
           enableOIDC: false
-          allow-no-subscriptions: true
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v2
