@@ -42,8 +42,7 @@ jobs:
           terraform init \
             -backend-config="storage_account_name=${{ secrets.TF_BACKEND_STORAGE_ACCOUNT }}" \
             -backend-config="container_name=${{ secrets.TF_BACKEND_CONTAINER_NAME }}" \
-            -backend-config="key=${{ secrets.TF_BACKEND_KEY }}" \
-            -backend-config="access_key=${{ secrets.AZURE_CLIENT_SECRET }}"
+            -backend-config="key=${{ secrets.TF_BACKEND_KEY }}"
 
       - name: Terraform Plan
         working-directory: infra
