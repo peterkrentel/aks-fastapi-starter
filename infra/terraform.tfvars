@@ -1,0 +1,9 @@
+subscription_id     = ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+tenant_id           = ${{ secrets.AZURE_TENANT_ID }}
+resource_group_name = "your-resource-group-name"
+location            = "eastus"
+aks_cluster_name    = "your-aks-cluster-name"
+dns_prefix          = "your-dns-prefix"
+node_count          = 3
+node_vm_size        = "Standard_DS2_v2"
+owner               = "your-name"
