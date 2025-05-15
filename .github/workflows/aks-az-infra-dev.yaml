@@ -46,6 +46,4 @@ jobs:
       - name: Terraform Apply (Manual Trigger)
         if: github.event_name == 'workflow_dispatch'
         working-directory: infra
-        steps:
-          - name: Terraform Apply
-            run: terraform apply tfplan
+        run: terraform apply tfplan
