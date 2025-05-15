@@ -9,6 +9,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: aks-infra-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   terraform:
     name: Terraform AKS Infrastructure
@@ -25,14 +29,11 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          allow-no-subscriptions: true
-          enable-AzPIM: true
-          enableOIDC: false
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.5.5
+          terraform_version: ${{ secrets.TERRAFORM_VERSION || 'latest' }}
 
       - name: Initialize Terraform
         working-directory: infra
