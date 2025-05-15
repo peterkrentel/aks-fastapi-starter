@@ -1,10 +1,7 @@
-terraform {
-  backend "azurerm" {
-    resource_group_name  = var.resource_group_name
-    storage_account_name = var.storage_account_name
-    container_name       = var.container_name
-    key                  = var.tfstate_key
-  }
+provider "azurerm" {
+  features {}
+  subscription_id = var.subscription_id
+  tenant_id       = var.tenant_id
 }
 
 resource "azurerm_resource_group" "aks_rg" {
@@ -21,7 +18,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
   default_node_pool {
     name                = "system"
-    node_count          = var.node_count
     vm_size             = var.node_vm_size
     enable_auto_scaling = true
     min_count           = var.min_node_count
