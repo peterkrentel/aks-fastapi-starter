@@ -1,66 +1,40 @@
-name: Manage AKS with Terraform
+name: Debug AKS with Terraform (Azure SP Authentication)
 
 on:
-  push:
-    paths:
-      - 'infra/**'      # Only triggers if files in infra/ are changed
-    branches:
-      - main
   workflow_dispatch:
 
 permissions:
   contents: read
-  id-token: write
 
 jobs:
   terraform:
-    name: Terraform AKS Infrastructure
+    name: Debug AKS Infrastructure with Terraform
     runs-on: ubuntu-latest
 
     env:
-      ARM_client_id: ${{ secrets.AZURE_CLIENT_ID }}
-      ARM_client_secret: ${{ secrets.AZURE_CLIENT_SECRET }}
-      ARM_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      ARM_tenant_id: ${{ secrets.AZURE_TENANT_ID }}
-      TF_VAR_resource_group_name: "your-resource-group-name"
-      TF_VAR_location: "eastus"
-      TF_VAR_aks_cluster_name: "your-aks-cluster-name"
-      TF_VAR_dns_prefix: "your-dns-prefix"
-      TF_VAR_node_count: 3
-      TF_VAR_node_vm_size: "Standard_DS2_v2"
-      TF_VAR_min_node_count: 1
-      TF_VAR_max_node_count: 5
-      TF_VAR_owner: "your-name"
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      #- name: Set up Azure CLI
-      #  uses: azure/login@v1
-      #  with:
-      #    client-id: ${{ secrets.AZURE_CLIENT_ID }}
-      #    tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-      #    client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
-      #    subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Debug Service Principal Variables
+        run: |
+          echo "Debugging Service Principal Authentication..."
+          echo "ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}"
+          echo "ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}"
+          echo "ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+          echo "ARM_CLIENT_SECRET: (hidden for security)"
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.5.6
 
-      - name: Debug Service Principal Variables
-        run: |
-          echo "ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}"
-          echo "ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}"
-          echo "ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-
-      - name: Terraform Validate Authentication
-        working-directory: infra
-        run: |
-          terraform providers
-
-      - name: Initialize Terraform (Debug Mode)
+      - name: Terraform Init (Debug Mode)
         working-directory: infra
         run: |
           terraform init \
@@ -69,11 +43,12 @@ jobs:
             -backend-config="key=${{ secrets.TF_BACKEND_KEY }}" \
             -lock=false -input=false -no-color -upgrade -reconfigure -debug
 
-      - name: Terraform Plan
+      - name: Terraform Providers (Debug)
         working-directory: infra
-        run: terraform plan -out=tfplan
+        run: terraform providers
 
-      - name: Terraform Apply (Manual Trigger)
-        if: github.event_name == 'workflow_dispatch'
+      - name: Terraform Validate Authentication (Debug)
         working-directory: infra
-        run: terraform apply tfplan
+        run: |
+          echo "Validating Azure Authentication..."
+          terraform plan -out=tfplan -no-color -input=false
