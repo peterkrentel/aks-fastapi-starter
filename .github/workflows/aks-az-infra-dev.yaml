@@ -49,6 +49,17 @@ jobs:
         with:
           terraform_version: 1.5.6
 
+      - name: Debug Service Principal Variables
+        run: |
+          echo "ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}"
+          echo "ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}"
+          echo "ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+
+      - name: Terraform Validate Authentication
+        working-directory: infra
+        run: |
+          terraform providers
+
       - name: Initialize Terraform (Debug Mode)
         working-directory: infra
         run: |
