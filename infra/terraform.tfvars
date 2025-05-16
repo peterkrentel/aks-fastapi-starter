@@ -1,19 +1,12 @@
 subscription_id     = "6f92e50e-463e-420a-a82c-98a3eb3391a2"
 tenant_id           = "9a4518c9-0727-45cb-9621-885dc292e209"
-resource_group_name = "your-resource-group-name"
+resource_group_name = "aks-rg-dev"
 location            = "eastus"
-aks_cluster_name    = "your-aks-cluster-name"
-dns_prefix          = "your-dns-prefix"
+aks_cluster_name    = "aks-fastapi-dev"
+dns_prefix          = "dev-dns-prefix"
 node_count          = 3
 node_vm_size        = "Standard_DS2_v2"
 owner               = "your-name"
-#environment         = "dev"
-#storage_account_name = "yourstorageaccountname"
-#container_name       = "yourcontainername"
-#key                 = "terraform.tfstate"
 min_node_count      = 1
 max_node_count      = 5
-#enable_auto_scaling = true
-#enable_monitoring    = true
-#enable_logging       = true
-#enable_network_policy  = true
+

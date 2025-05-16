@@ -1,15 +1,3 @@
-#variable "client_id" {
-#  description = "Azure Client ID (Service Principal)"
-#  default = "value"
-#  type        = string
-#}
-
-#variable "client_secret" {
-#  description = "Azure Client Secret (Service Principal)"
-#  type        = string
-#  default     = "value"
-#}
-
 variable "tenant_id" {
   description = "Azure Tenant ID"
   type        = string

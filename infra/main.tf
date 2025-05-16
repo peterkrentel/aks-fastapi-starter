@@ -13,8 +13,6 @@ terraform {
 provider "azurerm" {
   features {}
     subscription_id = var.subscription_id
-    #client_id       = var.client_id
-    #client_secret   = var.client_secret
     tenant_id       = var.tenant_id
 
 }
@@ -22,7 +20,6 @@ provider "azurerm" {
 resource "azurerm_resource_group" "aks_rg" {
   name     = var.resource_group_name
   location = var.location
-  #tags     = local.default_tags
 }
 
 resource "azurerm_kubernetes_cluster" "aks" {
@@ -46,6 +43,4 @@ resource "azurerm_kubernetes_cluster" "aks" {
   network_profile {
     network_plugin = "azure"
   }
-
-  #tags = local.default_tags
 }
