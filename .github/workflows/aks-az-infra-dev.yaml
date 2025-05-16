@@ -49,7 +49,7 @@ jobs:
 
       - name: Terraform Plan
         working-directory: infra
-        run: terraform plan -out=tfplan -no-color -input=false
+        run: terraform plan -out=tfplan -no-color -input=false -parallelism=3 -refresh=true -lock=false -debug
 
       - name: Terraform Apply (Manual Trigger)
         if: github.event_name == 'workflow_dispatch'
