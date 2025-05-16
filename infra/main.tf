@@ -4,7 +4,7 @@ terraform {
     storage_account_name = "aksgithubtf"
     container_name       = "terraform-state"
     key                 = "terraform.tfstate"
-    
+    use_cli_auth = false   # Explicitly disables CLI authentication
   }
 }
 
