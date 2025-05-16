@@ -49,13 +49,14 @@ jobs:
         with:
           terraform_version: 1.5.6
 
-      - name: Initialize Terraform
+      - name: Initialize Terraform (Debug Mode)
         working-directory: infra
         run: |
           terraform init \
             -backend-config="storage_account_name=${{ secrets.TF_BACKEND_STORAGE_ACCOUNT }}" \
             -backend-config="container_name=${{ secrets.TF_BACKEND_CONTAINER_NAME }}" \
-            -backend-config="key=${{ secrets.TF_BACKEND_KEY }}"
+            -backend-config="key=${{ secrets.TF_BACKEND_KEY }}" \
+            -lock=false -input=false -no-color -upgrade -reconfigure -debug
 
       - name: Terraform Plan
         working-directory: infra
