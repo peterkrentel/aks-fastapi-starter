@@ -1,4 +1,4 @@
-name: Manage AKS with Terraform (Optimized)
+name: Manage AKS with Terraform (BUILD)
 
 on:
   workflow_dispatch:
