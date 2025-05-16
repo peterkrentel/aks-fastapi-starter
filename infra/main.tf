@@ -5,6 +5,8 @@ terraform {
     container_name       = "terraform-state"
     key                 = "terraform.tfstate"
     use_cli_auth = false   # Explicitly disables CLI authentication
+    use_msi = false      # Explicitly disables Managed Service Identity authentication
+    use_oidc  = false     # Explicitly disables OIDC authentication
   }
 }
 
