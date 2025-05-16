@@ -25,6 +25,15 @@ jobs:
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.5.6
+      
+      - name: Initialize Terraform (Optimized)
+        working-directory: infra
+        run: |
+          terraform init \
+            -backend-config="storage_account_name=${{ secrets.TF_BACKEND_STORAGE_ACCOUNT }}" \
+            -backend-config="container_name=${{ secrets.TF_BACKEND_CONTAINER_NAME }}" \
+            -backend-config="key=${{ secrets.TF_BACKEND_KEY }}" \
+            -reconfigure -no-color -input=false -upgrade
 
       - name: Terraform Destroy
         working-directory: infra
