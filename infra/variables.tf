@@ -7,6 +7,7 @@ variable "client_id" {
 variable "client_secret" {
   description = "Azure Client Secret (Service Principal)"
   type        = string
+  default     = env("ARM_CLIENT_SECRET")
 }
 
 variable "tenant_id" {
