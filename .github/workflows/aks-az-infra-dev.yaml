@@ -47,6 +47,12 @@ jobs:
         working-directory: infra
         run: terraform providers
 
+      - name: Debug Terraform Configuration
+        working-directory: infra
+        run: |
+          terraform validate
+          terraform show -json
+
       - name: Terraform Plan
         working-directory: infra
         run: terraform plan -out=tfplan -no-color -input=false -parallelism=3 -refresh=true -lock=false -debug
