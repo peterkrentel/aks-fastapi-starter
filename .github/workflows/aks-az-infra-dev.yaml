@@ -1,4 +1,4 @@
-name: Debug AKS with Terraform (Azure SP Authentication)
+name: Manage AKS with Terraform (Optimized)
 
 on:
   workflow_dispatch:
@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   terraform:
-    name: Debug AKS Infrastructure with Terraform
+    name: AKS Infrastructure with Terraform (Debug and Optimized)
     runs-on: ubuntu-latest
 
     env:
@@ -21,6 +21,11 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.6
+
       - name: Debug Service Principal Variables
         run: |
           echo "Debugging Service Principal Authentication..."
@@ -29,26 +34,24 @@ jobs:
           echo "ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}"
           echo "ARM_CLIENT_SECRET: (hidden for security)"
 
-      - name: Install Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: 1.5.6
-
-      - name: Terraform Init (Debug Mode)
+      - name: Initialize Terraform (Optimized)
         working-directory: infra
         run: |
           terraform init \
             -backend-config="storage_account_name=${{ secrets.TF_BACKEND_STORAGE_ACCOUNT }}" \
             -backend-config="container_name=${{ secrets.TF_BACKEND_CONTAINER_NAME }}" \
             -backend-config="key=${{ secrets.TF_BACKEND_KEY }}" \
-            -lock=false -input=false -no-color -upgrade -reconfigure -debug
+            -reconfigure -no-color -input=false -upgrade
 
       - name: Terraform Providers (Debug)
         working-directory: infra
         run: terraform providers
 
-      - name: Terraform Validate Authentication (Debug)
+      - name: Terraform Plan
         working-directory: infra
-        run: |
-          echo "Validating Azure Authentication..."
-          terraform plan -out=tfplan -no-color -input=false
+        run: terraform plan -out=tfplan -no-color -input=false
+
+      - name: Terraform Apply (Manual Trigger)
+        if: github.event_name == 'workflow_dispatch'
+        working-directory: infra
+        run: terraform apply -no-color -input=false tfplan
